@@ -18,11 +18,19 @@ import "./Card.scss";
 ***********************************************************/
 
 class Card extends Component {
-  render() {
-    return (
-      <div className="card-container"></div>
-    );
-  }
+	render() {
+		const { id, name, email } = this.props;
+		return (
+			<div className="card-container">
+				<img
+					src={`https://robohash.org/${id}?set=set2&size=180x180`}
+					alt={name}
+				></img>
+				<h2>{name}</h2>
+				<p>{email}</p>
+			</div>
+		);
+	}
 }
 
 export default Card;

@@ -21,24 +21,46 @@ import "./Monsters.scss";
 ***********************************************************/
 
 class Monsters extends Component {
-  state = {
-    monsters: [],
-    userInput: ""
-  };
+	state = {
+		monsters: [],
+		userInput: "",
+	};
 
-  // 데이터 로딩
+	// 데이터 로딩
+	componentDidMount() {
+		fetch("https://jsonplaceholder.typicode.com/users", {
+			method: "GET",
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				this.setState({
+					monsters: data,
+				});
+			});
+	}
 
-  // SearchBox 에 props로 넘겨줄 handleChange 메소드 정의
+	handleChange = (event) => {
+		const { monsters, userInput } = this.state;
 
-  render() {
-    return (
-      <div className="Monsters">
-        <h1>컴포넌트 재사용 연습!</h1>
-        {/* <SearchBox handleChange=정의한메소드 /> */}
-        {/* <CardList monsters=몬스터리스트 /> */}
-      </div>
-    );
-  }
+		this.setState({
+			userInput: event.target.value,
+		});
+	};
+	// SearchBox 에 props로 넘겨줄 handleChange 메소드 정의
+
+	render() {
+		const filterMonster = this.state.monsters.filter((monster) =>
+			monster.name.toLowerCase().includes(this.state.userInput.toLowerCase())
+		);
+		return (
+			<div className="Monsters">
+				<h1>컴포넌트 재사용 연습!</h1>
+				<SearchBox handleChange={this.handleChange} />
+				{/* <SearchBox handleChange=정의한메소드 /> */}
+				<CardList monsters={filterMonster} />
+			</div>
+		);
+	}
 }
 
 export default Monsters;
